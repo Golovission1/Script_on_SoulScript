@@ -1,0 +1,41 @@
+local a=loadstring(game:HttpGet(string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,98,108,111,111,100,98,97,108,108,47,45,98,97,99,107,45,117,112,115,45,102,111,114,45,108,105,98,115,47,109,97,105,110,47,119,105,122,97,114,100)))()
+local b=a:NewWindow(string.char(68,105,103,32,116,111,32,69,97,114,116,226,128,153,115,32,67,79,82,69,33))
+local c=b:NewSection(string.char(83,111,117,108,32,83,99,114,105,112,116,32,89,84))
+c:CreateButton(string.char(70,114,101,101,32,80,101,116,32,120,53,48),function()
+    local d={4}
+    game:GetService(string.char(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101)):WaitForChild(string.char(82,101,109,111,116,101,115)):WaitForChild(string.char(83,112,105,110,80,114,105,122,101,69,118,101,110,116)):FireServer(unpack(d))
+end)
+local e=false
+c:CreateToggle(string.char(65,117,116,111,32,77,111,110,101,121),function(f)
+    e=f
+    if f then
+        spawn(function()
+            while e do
+                local g={string.char(104,101,108,108,111)}
+                game:GetService(string.char(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101)):WaitForChild(string.char(82,101,109,111,116,101,115)):WaitForChild(string.char(68,105,103,69,118,101,110,116)):FireServer(unpack(g))
+                wait(1)
+            end
+        end)
+    end
+end)
+local h=false
+c:CreateToggle(string.char(65,117,116,111,32,70,97,114,109),function(i)
+    h=i
+    if i then
+        spawn(function()
+            while h do
+                for j=1,10 do
+                    if not h then break end
+                    local k={j}
+                    game:GetService(string.char(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101)):WaitForChild(string.char(82,101,109,111,116,101,115)):WaitForChild(string.char(83,112,105,110,80,114,105,122,101,69,118,101,110,116)):FireServer(unpack(k))
+                    wait(1)
+                end
+            end
+        end)
+    end
+end)
+c:CreateButton(string.char(49,48,120,32,77,111,110,101,121),function()
+    local l={8}
+    game:GetService(string.char(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101)):WaitForChild(string.char(82,101,109,111,116,101,115)):WaitForChild(string.char(83,112,105,110,80,114,105,122,101,69,118,101,110,116)):FireServer(unpack(l))
+end)
+b:NewLabel(string.char(65,117,116,104,111,114,32,83,111,117,108,32,83,99,114,105,112,116,32,89,84))
