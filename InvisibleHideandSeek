@@ -1,0 +1,64 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local ESPFolder = Instance.new("Folder")
+ESPFolder.Name = "ESP"
+ESPFolder.Parent = game.CoreGui
+
+function CreateESP(character)
+    if not character then return end
+    
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local head = character:FindFirstChild("Head")
+    if not humanoid or not head then return end
+
+    local player = Players:GetPlayerFromCharacter(character)
+    
+    local highlight = Instance.new("Highlight")
+    highlight.Name = player.Name .. "_ESP"
+    highlight.Adornee = character
+    highlight.Parent = ESPFolder
+    
+    if player then
+        if player.Team == LocalPlayer.Team and player.Team ~= nil then
+            highlight.FillColor = Color3.fromRGB(50, 50, 255)
+        else
+            highlight.FillColor = Color3.fromRGB(255, 50, 50)
+        end
+    else
+        highlight.FillColor = Color3.fromRGB(255, 255, 255)
+    end
+
+    humanoid.Died:Connect(function()
+        highlight:Destroy()
+        wait(1)
+        if character and character.Parent then
+            CreateESP(character)
+        end
+    end)
+end
+
+function RemoveESP(character)
+    local player = Players:GetPlayerFromCharacter(character)
+    if player and ESPFolder:FindFirstChild(player.Name .. "_ESP") then
+        ESPFolder:FindFirstChild(player.Name .. "_ESP"):Destroy()
+    end
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        CreateESP(character)
+    end)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        if player.Character then
+            CreateESP(player.Character)
+        end
+        player.CharacterAdded:Connect(function(character)
+            CreateESP(character)
+        end)
+    end
+end
