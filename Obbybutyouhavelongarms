@@ -1,0 +1,13 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+for i = 1, 300 do
+    local checkpoint = workspace.Map.Main.Checkpoints[tostring(i)]
+    if checkpoint then
+        character.HumanoidRootPart.CFrame = checkpoint.CFrame
+        wait(0.1)
+    end
+end
+
+--qvpxxx
+--YouTube Soul Script
