@@ -1,0 +1,214 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local Size = 20
+local CurrentColor = BrickColor.new("Really red")
+local IsMinimized = false
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "HitboxControlGui"
+ScreenGui.Parent = PlayerGui
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Enabled = true
+ScreenGui.IgnoreGuiInset = true
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 300, 0, 250)
+Frame.Position = UDim2.new(0.5, -150, 1, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BackgroundTransparency = 0.1
+Frame.Active = true
+Frame.Draggable = true
+Frame.Visible = true
+Frame.ClipsDescendants = true
+Frame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 8)
+UICorner.Parent = Frame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(255, 255, 255)
+UIStroke.Transparency = 0.8
+UIStroke.Thickness = 1
+UIStroke.Parent = Frame
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0, 60, 0, 60)
+ToggleButton.Position = UDim2.new(0, 10, 0, 60)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleButton.Text = "Hitbox"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextScaled = true
+ToggleButton.Visible = false
+ToggleButton.Active = true
+ToggleButton.Parent = ScreenGui
+
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(0, 8)
+ToggleCorner.Parent = ToggleButton
+
+local ToggleStroke = Instance.new("UIStroke")
+ToggleStroke.Color = Color3.fromRGB(255, 255, 255)
+ToggleStroke.Transparency = 0.8
+ToggleStroke.Thickness = 1
+ToggleStroke.Parent = ToggleButton
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, -20, 0, 50)
+Title.Position = UDim2.new(0, 10, 0, 10)
+Title.BackgroundTransparency = 1
+Title.Text = "Hitbox Control"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.Font = Enum.Font.GothamBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Parent = Frame
+
+local SizeLabel = Instance.new("TextLabel")
+SizeLabel.Size = UDim2.new(1, -20, 0, 30)
+SizeLabel.Position = UDim2.new(0, 10, 0, 60)
+SizeLabel.BackgroundTransparency = 1
+SizeLabel.Text = "Size (5-1000):"
+SizeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+SizeLabel.TextScaled = true
+SizeLabel.TextXAlignment = Enum.TextXAlignment.Left
+SizeLabel.Parent = Frame
+
+local SizeInput = Instance.new("TextBox")
+SizeInput.Size = UDim2.new(0, 100, 0, 30)
+SizeInput.Position = UDim2.new(0, 170, 0, 60)
+SizeInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+SizeInput.Text = tostring(Size)
+SizeInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+SizeInput.TextScaled = true
+SizeInput.Parent = Frame
+
+local SizeInputCorner = Instance.new("UICorner")
+SizeInputCorner.CornerRadius = UDim.new(0, 4)
+SizeInputCorner.Parent = SizeInput
+
+local CreatorLabel = Instance.new("TextLabel")
+CreatorLabel.Size = UDim2.new(1, -20, 0, 30)
+CreatorLabel.Position = UDim2.new(0, 10, 0, 210)
+CreatorLabel.BackgroundTransparency = 1
+CreatorLabel.Text = "Creator: qvpxxx"
+CreatorLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+CreatorLabel.TextScaled = true
+CreatorLabel.Font = Enum.Font.Gotham
+CreatorLabel.TextXAlignment = Enum.TextXAlignment.Center
+CreatorLabel.Parent = Frame
+
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Size = UDim2.new(1, -20, 0, 30)
+MinimizeButton.Position = UDim2.new(0, 10, 0, 100)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MinimizeButton.Text = "Minimize"
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.TextScaled = true
+MinimizeButton.Parent = Frame
+local MinimizeButtonCorner = Instance.new("UICorner")
+MinimizeButtonCorner.CornerRadius = UDim.new(0, 4)
+MinimizeButtonCorner.Parent = MinimizeButton
+
+local ExitButton = Instance.new("TextButton")
+ExitButton.Size = UDim2.new(0, 30, 0, 30)
+ExitButton.Position = UDim2.new(1, -40, 0, 10)
+ExitButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ExitButton.Text = "X"
+ExitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExitButton.TextScaled = true
+ExitButton.Parent = Frame
+local ExitButtonCorner = Instance.new("UICorner")
+ExitButtonCorner.CornerRadius = UDim.new(0, 4)
+ExitButtonCorner.Parent = ExitButton
+
+SizeInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local input = tonumber(SizeInput.Text)
+        if input then
+            Size = math.clamp(input, 5, 1000)
+            SizeInput.Text = tostring(math.floor(Size))
+        else
+            SizeInput.Text = tostring(math.floor(Size))
+        end
+    end
+end)
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    if IsMinimized then
+        local tween = TweenService:Create(Frame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+            Size = UDim2.new(0, 300, 0, 250),
+            Position = UDim2.new(0.5, -150, 0.5, -125)
+        })
+        tween:Play()
+        Frame.Visible = true
+        ToggleButton.Visible = false
+        MinimizeButton.Text = "Minimize"
+        IsMinimized = false
+    else
+        local tween = TweenService:Create(Frame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+            Position = UDim2.new(0.5, -150, 1, 0)
+        })
+        tween:Play()
+        task.wait(0.3)
+        Frame.Visible = false
+        ToggleButton.Visible = true
+        MinimizeButton.Text = "Maximize"
+        IsMinimized = true
+    end
+end)
+
+ToggleButton.MouseButton1Click:Connect(function()
+    if IsMinimized then
+        local tween = TweenService:Create(Frame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+            Size = UDim2.new(0, 300, 0, 250),
+            Position = UDim2.new(0.5, -150, 0.5, -125)
+        })
+        tween:Play()
+        Frame.Visible = true
+        ToggleButton.Visible = false
+        MinimizeButton.Text = "Minimize"
+        IsMinimized = false
+    end
+end)
+
+ExitButton.MouseButton1Click:Connect(function()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                hrp.Size = Vector3.new(2, 2, 1)
+                hrp.Transparency = 0
+                hrp.BrickColor = BrickColor.new("Medium stone grey")
+                hrp.Material = Enum.Material.Plastic
+                hrp.CanCollide = true
+            end
+        end
+    end
+    ScreenGui:Destroy()
+end)
+
+RunService.RenderStepped:Connect(function()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                hrp.Size = Vector3.new(Size, Size, Size)
+                hrp.Transparency = 0.7
+                hrp.BrickColor = CurrentColor
+                hrp.Material = Enum.Material.Neon
+                hrp.CanCollide = false
+            end
+        end
+    end
+end)
+
+task.wait(0.1)
+Frame.Position = UDim2.new(0.5, -150, 1, 0)
+Frame.Visible = true
+local tween = TweenService:Create(Frame, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -150, 0.5, -125)})
+tween:Play()
